@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   Bot,
@@ -14,9 +14,9 @@ import {
   UserRoundSearch,
   Briefcase,
 } from 'lucide-react'
+import Registration from './pages/registration'
 
 /** @typedef {'idea' | 'hunt' | 'robot' | 'ctf' | 'impostor' | 'hack' | 'fire' | 'charades' | 'escape'} IconKey */
-/** @typedef {'Pitch Your Idea' | 'Tech Treasure Hunt' | 'NeuroSync: Sequence Memory Robot' | 'Apex Cyberforensics Recruitment Trial (CTF)' | 'The Blackout Protocol' | 'Hack2Hire' | 'Operation Booyah: Free Fire Showdown' | 'Tech Charades' | 'Debugging Escape Room'} RegistrationEvent */
 
 /**
  * @typedef {Object} EventItem
@@ -274,19 +274,6 @@ const events = [
   },
 ]
 
-/** @type {RegistrationEvent[]} */
-const registrationEvents = [
-  'Pitch Your Idea',
-  'Tech Treasure Hunt',
-  'NeuroSync: Sequence Memory Robot',
-  'Apex Cyberforensics Recruitment Trial (CTF)',
-  'The Blackout Protocol',
-  'Hack2Hire',
-  'Operation Booyah: Free Fire Showdown',
-  'Tech Charades',
-  'Debugging Escape Room',
-]
-
 const timeline = {
   day1: [
     '9:00 AM - 10:00 AM: Inauguration & Orientation',
@@ -309,17 +296,6 @@ function App() {
   const [activeDay, setActiveDay] = useState('All')
   const [selectedEvent, setSelectedEvent] = useState(/** @type {EventItem | null} */ (null))
   const [heroPointer, setHeroPointer] = useState({ x: 50, y: 34 })
-  const [registrationForm, setRegistrationForm] = useState({
-    eventName: registrationEvents[0],
-    teamLeadName: '',
-    member2Name: '',
-    member3Name: '',
-    member4Name: '',
-    collegeName: '',
-    email: '',
-    contact: '',
-    whatsapp: '',
-  })
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1400)
@@ -351,18 +327,12 @@ function App() {
     return events.filter((event) => event.day === activeDay)
   }, [activeDay])
 
-  /** @type {(field: 'eventName' | 'teamLeadName' | 'member2Name' | 'member3Name' | 'member4Name' | 'collegeName' | 'email' | 'contact' | 'whatsapp', value: string) => void} */
-  const handleRegistrationChange = (field, value) => {
-    setRegistrationForm((current) => ({
-      ...current,
-      [field]: value,
-    }))
-  }
+  // Check if we're on the registration page
+  const isRegistrationPage = typeof window !== 'undefined' && window.location.pathname === '/registration'
 
-  /** @type {(event: import('react').FormEvent<HTMLFormElement>) => void} */
-  const handleRegistrationSubmit = (event) => {
-    event.preventDefault()
-    window.open('https://docs.google.com/spreadsheets/d/1pYoyDePXf8egFfDtInpcbCGTK3jgjzfpwr7si6SGRM0/edit?usp=sharing', '_blank', 'noreferrer')
+  // Render Registration page if on that route
+  if (isRegistrationPage) {
+    return <Registration />
   }
 
   return (
@@ -403,7 +373,7 @@ function App() {
               <div>
                 <a href="#events">Events</a>
                 <a href="#timeline">Timeline</a>
-                <a href="#contact">Contact</a>
+                <a href="#contact-details">Contact</a>
               </div>
             </nav>
 
@@ -430,7 +400,7 @@ function App() {
                 Organized by Forum of Computer Engineers (FORCE), Department of CSE, DS, IOT
               </p>
               <div className="cta-row">
-                <a href="#contact" className="btn-glow">Register Now</a>
+                <a href="/registration" className="btn-glow">Register Now</a>
                 <a href="#events" className="btn-outline">Explore Events</a>
               </div>
               <div className="hero-date-row">
@@ -553,103 +523,6 @@ function App() {
                 <h3>Dr. Prabha R</h3>
                 <p>Contact: +91 99809 29663</p>
               </article>
-            </div>
-          </section>
-
-          <section className="section" id="contact">
-            <h2>Registration</h2>
-            <div className="registration-layout">
-              <p className="registration-note">
-                Fill in the form below with team member details, college, email, and phone numbers.
-                Submitting opens the registration sheet in a new tab for the next step.
-              </p>
-              <form className="glass block contact-form registration-form" onSubmit={handleRegistrationSubmit}>
-                <label>
-                  Event Name
-                  <select
-                    value={registrationForm.eventName}
-                    onChange={(event) => handleRegistrationChange('eventName', event.target.value)}
-                    required
-                  >
-                    {registrationEvents.map((eventName) => (
-                      <option key={eventName} value={eventName}>{eventName}</option>
-                    ))}
-                  </select>
-                </label>
-                <label>
-                  Team Lead Name
-                  <input
-                    type="text"
-                    value={registrationForm.teamLeadName}
-                    onChange={(event) => handleRegistrationChange('teamLeadName', event.target.value)}
-                    placeholder="Team lead / solo participant"
-                    required
-                  />
-                </label>
-                <label>
-                  Member 2 Name
-                  <input
-                    type="text"
-                    value={registrationForm.member2Name}
-                    onChange={(event) => handleRegistrationChange('member2Name', event.target.value)}
-                    placeholder="If applicable"
-                  />
-                </label>
-                <label>
-                  Member 3 Name
-                  <input
-                    type="text"
-                    value={registrationForm.member3Name}
-                    onChange={(event) => handleRegistrationChange('member3Name', event.target.value)}
-                    placeholder="If applicable"
-                  />
-                </label>
-                <label>
-                  Member 4 Name
-                  <input
-                    type="text"
-                    value={registrationForm.member4Name}
-                    onChange={(event) => handleRegistrationChange('member4Name', event.target.value)}
-                    placeholder="If applicable"
-                  />
-                </label>
-                <label>
-                  College Name
-                  <input
-                    type="text"
-                    value={registrationForm.collegeName}
-                    onChange={(event) => handleRegistrationChange('collegeName', event.target.value)}
-                    required
-                  />
-                </label>
-                <label>
-                  Email
-                  <input
-                    type="email"
-                    value={registrationForm.email}
-                    onChange={(event) => handleRegistrationChange('email', event.target.value)}
-                    required
-                  />
-                </label>
-                <label>
-                  Contact Number
-                  <input
-                    type="tel"
-                    value={registrationForm.contact}
-                    onChange={(event) => handleRegistrationChange('contact', event.target.value)}
-                    required
-                  />
-                </label>
-                <label>
-                  WhatsApp Number
-                  <input
-                    type="tel"
-                    value={registrationForm.whatsapp}
-                    onChange={(event) => handleRegistrationChange('whatsapp', event.target.value)}
-                  />
-                </label>
-                <button type="submit" className="btn-glow">Register &amp; Pay</button>
-              </form>
             </div>
           </section>
 
