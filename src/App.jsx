@@ -285,6 +285,7 @@ function App() {
                       Campus Location
                     </a>
                   </span>
+                  <span>Prize Pool: Up to Rs. 2,000</span>
                 </div>
               </motion.div>
             </header>

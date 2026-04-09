@@ -11,6 +11,7 @@ import { ArrowLeft, CalendarDays, Clock3, MapPin, Sparkles } from 'lucide-react'
  *    participants: string
  *    coordinators: string
  *    faculty: string
+ *    registrationFee: string
  *    requirements: string
  *    rounds: string[]
  *    rules: string[]
@@ -97,6 +98,11 @@ function EventLayout({ event }) {
           <article className="glass block">
             <h2><Sparkles size={16} /> Faculty</h2>
             <p>{event.faculty}</p>
+          </article>
+
+          <article className="glass block">
+            <h2><Sparkles size={16} /> Registration Fee</h2>
+            <p>{event.registrationFee}</p>
           </article>
 
           <article className="glass block">

@@ -27,6 +27,7 @@ export const events = [
       'Originality, relevance, feasibility, communication, team coordination, confidence, jury response, impact/scalability.',
     requirements:
       'Projector/smart board, microphone, WiFi, registration sheets, evaluation sheets.',
+    registrationFee: 'Rs. 200 per team (3 members)',
     registerLink: 'https://forms.gle/VmEKmDghwnLBdpd47',
   },
   {
@@ -54,6 +55,7 @@ export const events = [
     judging: 'First team with accurate clue order wins; tie-break by lesser completion time.',
     requirements:
       'Printed clues, registration sheet, answer sheets, pens, optional volunteers and announcement support.',
+    registrationFee: 'Rs. 300 per team (4 members)',
     registerLink: 'https://forms.gle/iLT93YKiNgnCmrKe8',
   },
   {
@@ -80,6 +82,7 @@ export const events = [
     judging: 'Accuracy, time, mistakes, communication clarity, and team coordination.',
     requirements:
       'Blindfolds, cones/chairs/desks, objects (ball/bottle), timer, volunteers.',
+    registrationFee: 'Rs. 200 per team (2 members)',
     registerLink: 'https://forms.gle/UjWfbZLiNBJUFdvK8',
   },
   {
@@ -109,6 +112,7 @@ export const events = [
     judging: 'Point and submission-time based leaderboard.',
     requirements:
       'High-speed internet, smart board + sound, power outlets, backup systems.',
+    registrationFee: 'Rs. 100 per participant',
     registerLink: 'https://forms.gle/9R3ookhPe3vN9AUVA',
   },
   {
@@ -133,6 +137,7 @@ export const events = [
     ],
     judging: 'Logic scores + Intel cards + Mole exile bonus + survival count.',
     requirements: 'Smart board, printed envelopes/grids/clues, stationery.',
+    registrationFee: 'Rs. 200 per team',
     registerLink: 'https://forms.gle/GDiLZMqijqRK9zbC7',
   },
   {
@@ -150,6 +155,7 @@ export const events = [
     rules: ['Please follow official Hack2Hire rules and judging policy.'],
     judging: 'As per official Hack2Hire criteria.',
     requirements: 'As specified on the official platform.',
+    registrationFee: 'Rs. 200 per team',
     registerLink: 'https://forms.gle/gtdbcgv4aPqwFMAE7',
     officialLink: 'https://hck2hire-2026.vercel.app',
   },
@@ -176,6 +182,7 @@ export const events = [
     judging: 'Cumulative points from placement + kills.',
     requirements:
       'Stable WiFi, power points, host device, smart board/projector, score tracking sheet.',
+    registrationFee: 'Rs. 300 per team',
     registerLink: 'https://forms.gle/wanHG3phwhAPZkoH8',
   },
   {
@@ -201,6 +208,7 @@ export const events = [
     judging: 'Accuracy, speed, clarity, confidence, and overall round performance.',
     requirements:
       'No Required materials',
+    registrationFee: 'Rs. 100 per participant',
     registerLink: 'https://forms.gle/UfyYDztmHcg88r7m7',
   },
   {
@@ -225,6 +233,7 @@ export const events = [
     ],
     judging: 'Correctness + least completion time + fewer hints used.',
     requirements: 'Projector, systems, WiFi, clue props and lock-based puzzle setup.',
+    registrationFee: 'Rs. 250 per team',
     registerLink: 'https://forms.gle/zWhshtheNuUtvEv89',
   },
 ]
