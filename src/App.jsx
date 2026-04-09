@@ -1,44 +1,37 @@
 import { useEffect, useMemo, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
+  ArrowUpRight,
   Bot,
-  Bug,
+  Briefcase,
   Building2,
   CalendarDays,
   Clock3,
   Gamepad2,
   Lightbulb,
+  Mail,
   MapPinned,
   MessagesSquare,
+  Phone,
+  Search,
   Shield,
   UserRoundSearch,
-  Briefcase,
+  Bug,
+  X,
 } from 'lucide-react'
-import Registration from './pages/registration'
+import { events } from './data/events'
+import EventLayout from './pages/events/EventLayout'
+import PitchYourIdeaPage from './pages/events/PitchYourIdeaPage'
+import TechTreasureHuntPage from './pages/events/TechTreasureHuntPage'
+import NeuroSyncPage from './pages/events/NeuroSyncPage'
+import CtfPage from './pages/events/CtfPage'
+import BlackoutProtocolPage from './pages/events/BlackoutProtocolPage'
+import Hack2HirePage from './pages/events/Hack2HirePage'
+import FreeFirePage from './pages/events/FreeFirePage'
+import TechCharadesPage from './pages/events/TechCharadesPage'
+import DebuggingEscapeRoomPage from './pages/events/DebuggingEscapeRoomPage'
 
-/** @typedef {'idea' | 'hunt' | 'robot' | 'ctf' | 'impostor' | 'hack' | 'fire' | 'charades' | 'escape'} IconKey */
-
-/**
- * @typedef {Object} EventItem
- * @property {string} id
- * @property {'Day 1' | 'Day 2'} day
- * @property {IconKey} icon
- * @property {string} name
- * @property {string} time
- * @property {string} venue
- * @property {string} description
- * @property {string} participants
- * @property {string} coordinators
- * @property {string} faculty
- * @property {string[]} rounds
- * @property {string[]} rules
- * @property {string} judging
- * @property {string} requirements
- * @property {string=} link
- */
-
-/** @type {Record<IconKey, import('lucide-react').LucideIcon>} */
-const iconMap = {
+const iconMap = /** @type {Record<string, import('lucide-react').LucideIcon>} */ ({
   idea: Lightbulb,
   hunt: MapPinned,
   robot: Bot,
@@ -48,260 +41,84 @@ const iconMap = {
   fire: Gamepad2,
   charades: MessagesSquare,
   escape: Bug,
+})
+
+const eventPageRoutes = /** @type {Record<string, () => import('react').JSX.Element>} */ ({
+  '/events/pitch-your-idea': PitchYourIdeaPage,
+  '/events/treasure-hunt': TechTreasureHuntPage,
+  '/events/control-a-human-robot': NeuroSyncPage,
+  '/events/ctf': CtfPage,
+  '/events/blackout-protocol': BlackoutProtocolPage,
+  '/events/hack2hire': Hack2HirePage,
+  '/events/free-fire': FreeFirePage,
+  '/events/tech-charades': TechCharadesPage,
+  '/events/debugging-escape-room': DebuggingEscapeRoomPage,
+})
+
+const scheduleWindow = {
+  start: 9 * 60,
+  end: 16 * 60 + 30,
 }
 
-/** @type {EventItem[]} */
-const events = [
-  {
-    id: 'pitch-your-idea',
-    day: 'Day 1',
-    icon: 'idea',
-    name: 'Pitch Your Idea',
-    time: '10:00 AM - 1:00 PM',
-    venue: 'Auditorium',
-    description:
-      'A team-based innovation event where participants present creative, practical, and impactful ideas for real-world problems.',
-    participants: 'Team event | Exactly 3 members per team',
-    coordinators:
-      'Neha Sunil (7022757878), Syeda Umme Kulsoom (9886900827)',
-    faculty: 'Dr. Santhosh PK, Prof. Thejaswi',
-    rounds: [
-      'Round 1: Idea abstract screening (problem, solution, target users, innovation, feasibility).',
-      'Round 2: Pitch presentation with PPT/slides, mockups/UI, prototype/model + jury questioning.',
-      'Final Round (if needed): Impact and investment justification challenge.',
-    ],
-    rules: [
-      'Exactly 3 members per team.',
-      'Only original ideas are allowed; plagiarism leads to disqualification.',
-      'Presentation time: 8-10 minutes.',
-      'Judges decision is final.',
-    ],
-    judging:
-      'Originality, relevance, feasibility, communication, team coordination, confidence, jury response, impact/scalability.',
-    requirements:
-      'Projector/smart board, microphone, WiFi, registration sheets, evaluation sheets.',
-  },
-  {
-    id: 'treasure-hunt',
-    day: 'Day 1',
-    icon: 'hunt',
-    name: 'Treasure Hunt',
-    time: '10:00 AM - 4:00 PM',
-    venue: 'Room 216 (start), entire campus',
-    description:
-      'A fun, campus-wide technical clue hunt where each solved clue unlocks the next location in sequence.',
-    participants: 'Team size: 2-4 | Max 15-20 teams',
-    coordinators: 'Rahul Balan (9731120050), Vishnu B (7892498652)',
-    faculty: 'Dr. Jerald Prasath, Prof. Sreevani',
-    rounds: [
-      'Kickoff (10 mins): Rules and first clue in Room 216.',
-      'Treasure Hunt (60-90 mins): Solve 10-12 sequential clues around campus.',
-      'Submission (10-15 mins): Return with all clues in the correct order.',
-    ],
-    rules: [
-      'Teams must stay together.',
-      'No skipping clues; solve in sequence only.',
-      'No unfair means or clue tampering.',
-    ],
-    judging: 'First team with accurate clue order wins; tie-break by lesser completion time.',
-    requirements:
-      'Printed clues, registration sheet, answer sheets, pens, optional volunteers and announcement support.',
-  },
-  {
-    id: 'control-a-human-robot',
-    day: 'Day 1',
-    icon: 'robot',
-    name: 'Control a Human Robot (NeuroSync)',
-    time: '10:00 AM - 1:00 PM',
-    venue: 'Classroom / Lab',
-    description:
-      'One participant memorizes a path in 10 seconds and guides a blindfolded teammate using only verbal commands.',
-    participants: 'Team size: 2 | Team limit: 20-30',
-    coordinators: 'Pallavi R (7975582202), Nishchita (8867236896)',
-    faculty: 'Prof. Nikitha Sooraj, Prof. Syeda Tameema, Dr. Mani S',
-    rounds: [
-      'Memory Phase: Controller views path/sequence for 10 seconds.',
-      'Execution Phase: Robot executes commands (Forward, Left, Right, Pick).',
-    ],
-    rules: [
-      'Only verbal commands allowed.',
-      'No physical guidance or touching by controller.',
-      'Robot must remain blindfolded throughout the run.',
-    ],
-    judging: 'Accuracy, time, mistakes, communication clarity, and team coordination.',
-    requirements:
-      'Blindfolds, cones/chairs/desks, objects (ball/bottle), timer, volunteers.',
-  },
-  {
-    id: 'ctf',
-    day: 'Day 1',
-    icon: 'ctf',
-    name: 'CTF (Capture The Flag)',
-    time: '1:00 PM - 4:30 PM',
-    venue: 'Computer Lab (preferably 311)',
-    description:
-      'Story-driven beginner-friendly cyberforensics CTF around metadata analysis, file recovery, and crypto.',
-    participants: 'Solo participation | 50-80 slots | Open to all colleges',
-    coordinators:
-      'Ahmed Sufiyan (7483368337), Yashaswini (7338144731), Gomathi D (8618474453)',
-    faculty: 'Dr. Sudaroli D, Dr. Sudhakar D',
-    rounds: [
-      'Briefing: Story intro and tool orientation (30 mins).',
-      'Investigation: 15 challenge fragments on CTFd portal (120 mins).',
-      'Debrief: Leaderboard lock + walkthrough + prizes (30-60 mins).',
-    ],
-    rules: [
-      'No sharing flags or collaboration.',
-      'No DoS / brute-force behavior.',
-      'Laptop with Wireshark, StegSolve, CyberChef required.',
-      'Registration fee: Rs.100 per participant.',
-    ],
-    judging: 'Point and submission-time based leaderboard.',
-    requirements:
-      'High-speed internet, smart board + sound, power outlets, backup systems.',
-    link: 'https://ctf-phi-one.vercel.app/',
-  },
-  {
-    id: 'blackout-protocol',
-    day: 'Day 1',
-    icon: 'impostor',
-    name: 'The Blackout Protocol (Impostor)',
-    time: '10:00 AM - 4:00 PM',
-    venue: 'Large Classroom',
-    description:
-      'A social deduction logic game where teams solve puzzles while identifying the hidden Mole.',
-    participants: 'Strictly 4 per team | Max 15-20 teams',
-    coordinators: 'Midhun Krishna M (8197203406), Gunakar K R (9786296819)',
-    faculty: 'Prof. Tabassum, Prof. Sathiyapriya',
-    rounds: [
-      'Data Recovery (20 mins), The Trade (25 mins), Interrogation (15 mins), The Purge (30 mins).',
-    ],
-    rules: [
-      'No phones/calculators.',
-      'Exposing role slips causes disqualification.',
-      'Inter-team communication only in Round 2.',
-    ],
-    judging: 'Logic scores + Intel cards + Mole exile bonus + survival count.',
-    requirements: 'Smart board, printed envelopes/grids/clues, stationery.',
-  },
-  {
-    id: 'hack2hire',
-    day: 'Day 2',
-    icon: 'hack',
-    name: 'Hack2Hire',
-    time: 'Day 2 Main Event',
-    venue: 'See official website',
-    description: 'External flagship event. All details are published on the official website.',
-    participants: 'Refer official event page',
-    coordinators: 'Published on the official site',
-    faculty: 'Dr. Sudaroli D, Dr. Sajithra Varun',
-    rounds: ['Follow the official Hack2Hire schedule and challenge format.'],
-    rules: ['Please follow official Hack2Hire rules and judging policy.'],
-    judging: 'As per official Hack2Hire criteria.',
-    requirements: 'As specified on the official platform.',
-    link: 'https://hck2hire-2026.vercel.app',
-  },
-  {
-    id: 'free-fire',
-    day: 'Day 2',
-    icon: 'fire',
-    name: 'Free Fire Tournament',
-    time: '10:00 AM - 4:00 PM',
-    venue: 'Large Classroom / Seminar Hall',
-    description:
-      'Squad battle royale competition where strategy, coordination, and consistency decide the final Booyah winners.',
-    participants: 'Strictly 4 per team | Max 15-20 teams',
-    coordinators: 'Vishnu B (7892498652), Rahul Balan (9731120050)',
-    faculty: 'Dr. E. Praynlin, Prof. Suganya',
-    rounds: [
-      'Qualifiers (45 mins), Semi-Finals (45 mins), Grand Finals (60 mins over 2-3 matches).',
-    ],
-    rules: [
-      'Mobile devices only; emulators prohibited.',
-      'No hacking, scripting, or teaming across squads.',
-      'Late entry not allowed; internet issues are player responsibility.',
-    ],
-    judging: 'Cumulative points from placement + kills.',
-    requirements:
-      'Stable WiFi, power points, host device, smart board/projector, score tracking sheet.',
-  },
-  {
-    id: 'tech-charades',
-    day: 'Day 2',
-    icon: 'charades',
-    name: 'Tech Charades',
-    time: 'Approx. 3 Hours',
-    venue: 'Seminar Hall / Smart Classroom',
-    description:
-      'Fast solo competition testing tech awareness, rapid thinking, communication, and puzzle-solving ability.',
-    participants: 'Solo event',
-    coordinators: 'Aman Pendari (7899727402), Raga Mishra (9739953867)',
-    faculty: 'Dr. Shanthala PT, Prof. Syeda Tameema',
-    rounds: [
-      'Logo Blitz, Rapid Fire Tech, Describe the Term, Tech Puzzle Rush, Buzz Battle Finale.',
-    ],
-    rules: [
-      'Solo participation only.',
-      'No mobile phones or external help.',
-      'Time limits are strict; malpractice disqualifies.',
-    ],
-    judging: 'Accuracy, speed, clarity, confidence, and overall round performance.',
-    requirements:
-      'Laptop with slides, projector, timer, printed chits/sheets, markers, optional buzzers.',
-  },
-  {
-    id: 'debugging-escape-room',
-    day: 'Day 2',
-    icon: 'escape',
-    name: 'Debugging Escape Room',
-    time: '10:00 AM - 4:00 PM',
-    venue: 'Labs (preferably 112 and 113)',
-    description:
-      'Puzzle-based murder mystery where teams decode clues to identify killer, weapon, and motive before timeout.',
-    participants: 'Max 3 per team | 20-30 teams',
-    coordinators: 'Kulsum Aftab (9591337789), Priyanka S. Pai (7019571208)',
-    faculty: 'Prof. Manjusha N M, Prof. Smitha H',
-    rounds: [
-      'Briefing and entry (3 mins), Investigation and puzzle solving (15 mins), Final decision (5 mins).',
-    ],
-    rules: [
-      'Teams stay together and avoid external assistance.',
-      'No forceful handling of props/locks.',
-      'Maximum 2 hints; final decisions cannot be changed.',
-    ],
-    judging: 'Correctness + least completion time + fewer hints used.',
-    requirements: 'Projector, systems, WiFi, clue props and lock-based puzzle setup.',
-  },
-]
+const scheduleTicks = Array.from({ length: 16 }, (_, index) => scheduleWindow.start + index * 30)
 
-const timeline = {
-  day1: [
-    '9:00 AM - 10:00 AM: Inauguration & Orientation',
-    '10:00 AM - 1:00 PM: Pitch Your Idea',
-    '10:00 AM - 4:00 PM: Treasure Hunt',
-    '10:00 AM - 1:00 PM: Control a Human Robot',
-    '10:00 AM - 4:00 PM: The Blackout Protocol',
-    '1:00 PM - 4:30 PM: CTF',
-  ],
-  day2: [
-    'Day 2 Featured: Hack2Hire',
-    '10:00 AM - 4:00 PM: Free Fire Tournament',
-    '10:00 AM - 4:00 PM: Debugging Escape Room',
-    'Approx. 3 Hours: Tech Charades',
-  ],
+/** @typedef {'Day 1' | 'Day 2'} ScheduleDay */
+
+/**
+ * @typedef {Object} ScheduleBarRow
+ * @property {string} title
+ * @property {number=} start
+ * @property {number=} end
+ * @property {string=} tone
+ * @property {string=} timeLabel
+ * @property {string=} featured
+ */
+
+/** @param {number} minutes */
+const formatScheduleTick = (minutes) => {
+  const hour24 = Math.floor(minutes / 60)
+  const minute = minutes % 60
+  const hour12 = ((hour24 + 11) % 12) + 1
+  const suffix = hour24 >= 12 ? 'PM' : 'AM'
+  return `${hour12}:${String(minute).padStart(2, '0')} ${suffix}`
 }
+
+const scheduleRows = /** @type {Record<ScheduleDay, ScheduleBarRow[]>} */ ({
+  'Day 1': [
+    { title: 'Inauguration & Orientation', start: 9 * 60, end: 10 * 60, tone: 'gold', timeLabel: '9:00 AM' },
+    { title: 'Pitch Your Idea', start: 10 * 60, end: 13 * 60, tone: 'blue', timeLabel: '10:00 AM - 1:00 PM' },
+    { title: 'Tech Treasure Hunt', start: 10 * 60, end: 16 * 60, tone: 'cyan', timeLabel: '10:00 AM - 4:00 PM' },
+    { title: 'NeuroSync', start: 10 * 60, end: 13 * 60, tone: 'teal', timeLabel: '10:00 AM - 1:00 PM' },
+    { title: 'The Blackout Protocol', start: 10 * 60, end: 16 * 60, tone: 'indigo', timeLabel: '10:00 AM - 4:00 PM' },
+    { title: 'CTF', start: 13 * 60, end: 16 * 60 + 30, tone: 'violet', timeLabel: '1:00 PM - 4:30 PM' },
+  ],
+  'Day 2': [
+    { title: 'Hack2Hire', start: 10 * 60, end: 12 * 60, tone: 'gold', timeLabel: '10:00 AM - 12:00 PM' },
+    { title: 'Free Fire Tournament', start: 10 * 60, end: 16 * 60, tone: 'gold', timeLabel: '10:00 AM - 2:00 PM' },
+    { title: 'Debugging Escape Room', start: 12 * 60, end: 16 * 60, tone: 'cyan', timeLabel: '12:00 PM - 4:00 PM' },
+    { title: 'Tech Charades', start: 10 * 60, end: 13 * 60, tone: 'teal', timeLabel: '10:00 AM - 1:00 PM' },
+  ],
+})
+
+const scheduleDayOptions = /** @type {ScheduleDay[]} */ (['Day 1', 'Day 2'])
 
 function App() {
   const [loading, setLoading] = useState(true)
   const [activeDay, setActiveDay] = useState('All')
-  const [selectedEvent, setSelectedEvent] = useState(/** @type {EventItem | null} */ (null))
+  const [scheduleDay, setScheduleDay] = useState(/** @type {ScheduleDay} */ ('Day 1'))
   const [heroPointer, setHeroPointer] = useState({ x: 50, y: 34 })
+  const [searchOpen, setSearchOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
+
+  const normalizedPath =
+    typeof window !== 'undefined' ? window.location.pathname.replace(/\/+$/, '') || '/' : '/'
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1400)
+    const timer = setTimeout(() => setLoading(false), 1300)
     return () => clearTimeout(timer)
   }, [])
 
+  /** @param {import('react').MouseEvent<HTMLElement>} event */
   const handleHeroMove = (event) => {
     const rect = event.currentTarget.getBoundingClientRect()
     const x = ((event.clientX - rect.left) / rect.width) * 100
@@ -317,22 +134,49 @@ function App() {
     setHeroPointer({ x: 50, y: 34 })
   }
 
-  const heroStyle = {
+  const heroStyle = /** @type {import('react').CSSProperties & Record<'--hero-x' | '--hero-y', string>} */ ({
     '--hero-x': `${heroPointer.x}%`,
     '--hero-y': `${heroPointer.y}%`,
-  }
+  })
 
   const visibleEvents = useMemo(() => {
     if (activeDay === 'All') return events
     return events.filter((event) => event.day === activeDay)
   }, [activeDay])
 
-  // Check if we're on the registration page
-  const isRegistrationPage = typeof window !== 'undefined' && window.location.pathname === '/registration'
+  const searchResults = useMemo(() => {
+    if (!searchQuery.trim()) return []
+    const query = searchQuery.toLowerCase()
+    return events.filter((event) =>
+      event.name.toLowerCase().includes(query) ||
+      event.description.toLowerCase().includes(query)
+    )
+  }, [searchQuery])
 
-  // Render Registration page if on that route
-  if (isRegistrationPage) {
-    return <Registration />
+  /** @param {string} eventId */
+  const openEventPage = (eventId) => {
+    window.location.href = `/events/${eventId}`
+  }
+
+  /** @param {number} start @param {number} end */
+  const getBarStyle = (start, end) => {
+    const duration = scheduleWindow.end - scheduleWindow.start
+    const left = ((start - scheduleWindow.start) / duration) * 100
+    const width = ((end - start) / duration) * 100
+    return {
+      left: `${Math.max(0, left)}%`,
+      width: `${Math.max(8, width)}%`,
+    }
+  }
+
+  const MatchedEventPage = eventPageRoutes[normalizedPath]
+
+  if (MatchedEventPage) {
+    return <MatchedEventPage />
+  }
+
+  if (normalizedPath.startsWith('/events/')) {
+    return <EventLayout event={null} />
   }
 
   return (
@@ -357,221 +201,365 @@ function App() {
           <div className="bg-orb bg-orb-one" aria-hidden="true" />
           <div className="bg-orb bg-orb-two" aria-hidden="true" />
 
-          <header
-            className="hero section"
-            id="home"
-            style={heroStyle}
-            onMouseMove={handleHeroMove}
-            onMouseLeave={handleHeroLeave}
-          >
-            <div className="hero-fx hero-fx-left" aria-hidden="true" />
-            <div className="hero-fx hero-fx-right" aria-hidden="true" />
-            <div className="hero-grid-overlay" aria-hidden="true" />
-
-            <nav className="top-nav glass">
-              <img src="/images/t-john-logo.png" alt="Logo" className="nav-logo" />
-              <div>
-                <a href="#events">Events</a>
-                <a href="#timeline">Timeline</a>
-                <a href="#contact-details">Contact</a>
-              </div>
-            </nav>
-
-            <motion.div
-              className="hero-logo-wrap"
-              initial={{ opacity: 0, scale: 0.9, y: 14 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.15 }}
-              whileHover={{ scale: 1.03, rotate: -1 }}
+          <div className="page-inner">
+            <header
+              className="hero section"
+              id="home"
+              style={heroStyle}
+              onMouseMove={handleHeroMove}
+              onMouseLeave={handleHeroLeave}
             >
-              <img src="/images/t-john-logo.png" alt="T John College" className="hero-logo" />
-            </motion.div>
+              <div className="hero-fx hero-fx-left" aria-hidden="true" />
+              <div className="hero-fx hero-fx-right" aria-hidden="true" />
+              <div className="hero-grid-overlay" aria-hidden="true" />
 
-            <motion.div
-              className="hero-content"
-              initial={{ opacity: 0, y: 26 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.08 }}
-            >
-              <p className="subtitle">Forum of Computer Engineers</p>
-              <h1>FORCE Innovators Meet - 2026</h1>
-              <p className="tagline">Code • Connect • Create</p>
-              <p className="organizers">
-                Organized by Forum of Computer Engineers (FORCE), Department of CSE, DS, IOT
-              </p>
-              <div className="cta-row">
-                <a href="/registration" className="btn-glow">Register Now</a>
-                <a href="#events" className="btn-outline">Explore Events</a>
-              </div>
-              <div className="hero-date-row">
-                <span><CalendarDays size={16} /> 28th & 29th April 2026</span>
-                <span><Clock3 size={16} /> 9:00 AM to 4:30 PM</span>
-                <span><Building2 size={16} /> Campus Tech Fest</span>
-              </div>
-              <div className="hero-action-row">
-                <motion.a whileHover={{ y: -3, scale: 1.02 }} whileTap={{ scale: 0.98 }} href="#events" className="hero-action-chip glass">Browse live events</motion.a>
-                <motion.a whileHover={{ y: -3, scale: 1.02 }} whileTap={{ scale: 0.98 }} href="#timeline" className="hero-action-chip glass">Check the schedule</motion.a>
-              </div>
-            </motion.div>
-          </header>
+              <div className="hero-topbar">
+                <div className="hero-brand glass">
+                  <img src="/images/t-john-logo.png" alt="Logo" className="nav-logo" />
+                </div>
 
-          <section className="section" id="about">
-            <motion.div
-              className="glass block"
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <h2>About The Fest</h2>
-              <p>
-                An AI-powered tech fest focused on innovation, coding, cybersecurity, gaming,
-                communication, and real-world problem solving.
-              </p>
-              <p>2 Days Event: 28th & 29th April 2026</p>
-            </motion.div>
-          </section>
+                <nav className="top-nav glass" aria-label="Primary navigation">
+                  <button
+                    className="nav-search-btn"
+                    onClick={() => setSearchOpen(true)}
+                    aria-label="Search events"
+                  >
+                    <Search size={17} className="nav-search-icon" />
+                  </button>
+                  <span className="nav-divider" aria-hidden="true" />
+                  <a href="#home" className="nav-link active">Home</a>
+                  <span className="nav-sep" aria-hidden="true">•</span>
+                  <a href="#events" className="nav-link">Register Here</a>
+                  <span className="nav-sep" aria-hidden="true">•</span>
+                  <a href="#timeline" className="nav-link">Timeline</a>
+                  <span className="nav-sep" aria-hidden="true">•</span>
+                  <a href="#contact-details" className="nav-link">Contact</a>
+                </nav>
 
-          <section className="section" id="events">
-            <div className="section-head">
-              <h2>Events</h2>
-              <div className="day-switch">
-                {['All', 'Day 1', 'Day 2'].map((day) => (
+                <div className="hero-badge">
+                  <img
+                    src="/images/force logo.png"
+                    alt="FORCE"
+                    className="hero-badge-logo"
+                  />
+                </div>
+              </div>
+
+              <motion.div
+                className="hero-logo-wrap"
+                initial={{ opacity: 0, scale: 0.9, y: 14 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.15 }}
+                whileHover={{ scale: 1.03, rotate: -1 }}
+              >
+                <img src="/images/t-john-logo.png" alt="T John College" className="hero-logo" />
+              </motion.div>
+
+              <motion.div
+                className="hero-content"
+                initial={{ opacity: 0, y: 26 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.08 }}
+              >
+                <p className="subtitle">Forum of Computer Engineers</p>
+                <h1>FORCE Innovators Meet - 2026</h1>
+                <p className="tagline">Code • Connect • Create</p>
+                <p className="organizers">
+                  Organized by Department of CSE/DS/IOT
+                </p>
+                <div className="cta-row">
+                  <a href="#events" className="btn-glow">Register Here</a>
+                  <a href="#timeline" className="btn-outline">Explore Timeline</a>
+                </div>
+                <div className="hero-date-row">
+                  <span><CalendarDays size={16} /> 28th & 29th April 2026</span>
+                  <span><Clock3 size={16} /> 9:00 AM to 4:30 PM</span>
+                  
+                </div>
+              </motion.div>
+            </header>
+
+            <section className="section" id="about">
+              <motion.div
+                className="glass block"
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+              >
+                <h2>About The Fest</h2>
+                <p>
+                  An AI-powered tech fest focused on innovation, coding, cybersecurity, gaming,
+                  communication, and real-world problem solving.
+                </p>
+                <p>2 Days Event: 28th & 29th April 2026</p>
+              </motion.div>
+            </section>
+
+            <section className="section" id="events">
+              <div className="section-head">
+                <div>
+                  <h2>Register Here</h2>
+                  <p className="section-subtitle">
+                    Click any event to open its separate page, then use Register Here.
+                  </p>
+                </div>
+                <div className="day-switch">
+                  {['All', 'Day 1', 'Day 2'].map((day) => (
+                    <button
+                      key={day}
+                      className={activeDay === day ? 'active' : ''}
+                      onClick={() => setActiveDay(day)}
+                    >
+                      {day}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="event-grid">
+                {visibleEvents.map((event, index) => {
+                  const EventIcon = iconMap[event.icon]
+                  const cardClass = event.day === 'Day 1' ? 'event-day1' : 'event-day2'
+
+                  return (
+                    <motion.article
+                      key={event.id}
+                      className={`event-card glass ${cardClass}`}
+                      initial={{ opacity: 0, y: 24 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.04 }}
+                      onClick={() => openEventPage(event.id)}
+                      onKeyDown={(keyEvent) => {
+                        if (keyEvent.key === 'Enter' || keyEvent.key === ' ') {
+                          keyEvent.preventDefault()
+                          openEventPage(event.id)
+                        }
+                      }}
+                      tabIndex={0}
+                      role="button"
+                    >
+                      <div className="event-card-head">
+                        <span className="icon-pill"><EventIcon size={18} /></span>
+                        <span className="day-pill">{event.day}</span>
+                      </div>
+
+                      <h3>{event.name}</h3>
+                      <p>{event.description}</p>
+                      <small>{event.time} • {event.venue}</small>
+
+                      <div className="event-actions">
+                        <a
+                          className="event-action-link"
+                          href={`/events/${event.id}`}
+                          onClick={(eventClick) => eventClick.stopPropagation()}
+                        >
+                          View Event <ArrowUpRight size={14} />
+                        </a>
+                        <a
+                          className="event-register-link"
+                          href={event.registerLink}
+                          target="_blank"
+                          rel="noreferrer"
+                          onClick={(eventClick) => eventClick.stopPropagation()}
+                        >
+                          Register Here
+                        </a>
+                      </div>
+                    </motion.article>
+                  )
+                })}
+              </div>
+            </section>
+
+            <section className="section" id="timeline">
+              <div className="schedule-heading-wrap">
+                <h2>Event Schedule</h2>
+                <p className="section-subtitle">28th & 29th April 2026</p>
+              </div>
+
+              <div className="schedule-day-switch" role="tablist" aria-label="Schedule day switch">
+                {scheduleDayOptions.map((day) => (
                   <button
                     key={day}
-                    className={activeDay === day ? 'active' : ''}
-                    onClick={() => setActiveDay(day)}
+                    className={scheduleDay === day ? 'active' : ''}
+                    onClick={() => setScheduleDay(day)}
                   >
                     {day}
                   </button>
                 ))}
               </div>
-            </div>
 
-            <div className="event-grid">
-              {visibleEvents.map((event, index) => {
-                const EventIcon = iconMap[event.icon]
-                return (
-                  <motion.article
-                    key={event.id}
-                    className="event-card glass"
-                    initial={{ opacity: 0, y: 24 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.04 }}
-                    onClick={() => setSelectedEvent(event)}
-                  >
-                    <div className="event-card-head">
-                      <span className="icon-pill"><EventIcon size={18} /></span>
-                      <span className="day-pill">{event.day}</span>
+              <div className="schedule-board glass">
+                <div className="schedule-axis">
+                  <span className="schedule-axis-title">Event</span>
+                  <div className="schedule-ticks" aria-hidden="true">
+                    {scheduleTicks.map((tick) => (
+                      <span key={tick}>{formatScheduleTick(tick)}</span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="schedule-rows">
+                  {scheduleRows[scheduleDay].map((item) => (
+                    <div key={item.title} className="schedule-row">
+                      <p className="schedule-event-title">{item.title}</p>
+                      <div className="schedule-track">
+                        {item.featured ? (
+                          <div className="schedule-featured-pill">{item.featured}</div>
+                        ) : (
+                          <div
+                            className={`schedule-bar schedule-bar-${item.tone}`}
+                            style={getBarStyle(item.start ?? scheduleWindow.start, item.end ?? scheduleWindow.start)}
+                          >
+                            <Clock3 size={14} />
+                            <span>{item.timeLabel}</span>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                    <h3>{event.name}</h3>
-                    <p>{event.description}</p>
-                    <small>{event.time} • {event.venue}</small>
-                    {event.link && (
-                      <a
-                        className="external-link"
-                        href={event.link}
-                        target="_blank"
-                        rel="noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        Open Official Link
-                      </a>
-                    )}
-                  </motion.article>
-                )
-              })}
-            </div>
-          </section>
-
-          <section className="section" id="timeline">
-            <h2>Schedule Timeline</h2>
-            <div className="timeline-grid">
-              <div className="glass block">
-                <h3>Day 1 - 28th April</h3>
-                <ul>
-                  {timeline.day1.map((line) => (
-                    <li key={line}>{line}</li>
                   ))}
-                </ul>
+                </div>
               </div>
-              <div className="glass block">
-                <h3>Day 2 - 29th April</h3>
-                <ul>
-                  {timeline.day2.map((line) => (
-                    <li key={line}>{line}</li>
-                  ))}
-                </ul>
+            </section>
+
+            <section className="section" id="chief-guest">
+              <h2>Chief Guest</h2>
+              <motion.div
+                className="chief-guest-wrap glass"
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+              >
+                <div className="chief-guest-image">
+                  <img
+                    src="/images/Prabhu Stavarmath.jpg"
+                    alt="Prabhu Stavarmath"
+                  />
+                </div>
+                <div className="chief-guest-content">
+                  <h3>Prabhu Stavarmath</h3>
+                  <p className="chief-guest-title">Chief Executive Officer | Edgehax (formerly Bharat Pi)</p>
+                  <p className="chief-guest-bio">
+                    Serial entrepreneur with 15+ years of experience in building IoT hardware products and cloud applications for large-scale enterprise deployment. Founded two startups with $500K+ revenues and 100K+ customers. Expert in product management, business development, enterprise sales, and digital marketing.
+                  </p>
+                  <div className="chief-guest-meta">
+                    <p><strong>Location:</strong> Bengaluru, Karnataka, India</p>
+                    <p><strong>Expertise:</strong> IoT Hardware • Edge AI • Product Strategy • Enterprise Sales</p>
+                    <a href="https://www.linkedin.com/in/stavarmath" target="_blank" rel="noreferrer" className="btn-outline">
+                      View LinkedIn Profile
+                    </a>
+                  </div>
+                </div>
+              </motion.div>
+            </section>
+
+            <section className="section" id="contact-details">
+              <h2>Contact Details</h2>
+              <div className="contact-grid contacts-only">
+                <article className="glass block contact-card">
+                  <h3>Dr. Prabha R</h3>
+                  <div className="contact-links">
+                    <a href="tel:+919980929663" className="contact-link phone-link">
+                      <Phone size={16} /> +91 99809 29663
+                    </a>
+                  </div>
+                </article>
+                <article className="glass block contact-card">
+                  <h3>Pavan R</h3>
+                  <div className="contact-links">
+                    <a href="mailto:pavanrpavanr567@gmail.com" className="contact-link email-link">
+                      <Mail size={16} /> pavanrpavanr567@gmail.com
+                    </a>
+                    <a href="tel:+918317497526" className="contact-link phone-link">
+                      <Phone size={16} /> 8317497526
+                    </a>
+                  </div>
+                </article>
+                <article className="glass block contact-card">
+                  <h3>Kulsum Aftab</h3>
+                  <div className="contact-links">
+                    <a href="mailto:kulsumaftab786@gmail.com" className="contact-link email-link">
+                      <Mail size={16} /> kulsumaftab786@gmail.com
+                    </a>
+                    <a href="tel:+919591337789" className="contact-link phone-link">
+                      <Phone size={16} /> 9591337789
+                    </a>
+                  </div>
+                </article>
               </div>
-            </div>
-          </section>
+            </section>
 
-          <section className="section" id="contact-details">
-            <h2>Contact Details</h2>
-            <div className="contact-grid contacts-only">
-              <article className="glass block contact-card">
-                <h3>Kulsum Aftab</h3>
-                <p>Email: kulsumaftab786@gmail.com</p>
-                <p>Contact: 9591337789</p>
-              </article>
-              <article className="glass block contact-card">
-                <h3>Pavan R</h3>
-                <p>Email: pavanrpavanr567@gmail.com</p>
-                <p>Contact: 8317497526</p>
-              </article>
-              <article className="glass block contact-card">
-                <h3>Dr. Prabha R</h3>
-                <p>Contact: +91 99809 29663</p>
-              </article>
-            </div>
-          </section>
-
-          <footer className="section footer glass">
-            <p>FORCE Innovators Meet - 2026</p>
-            <p>Forum of Computer Engineers | Department of CSE, DS, IOT</p>
-          </footer>
+            <footer className="section footer glass">
+              <p>FORCE Innovators Meet - 2026</p>
+              <p>Forum of Computer Engineers | Department of CSE, DS, IOT</p>
+            </footer>
+          </div>
 
           <AnimatePresence>
-            {selectedEvent && (
+            {searchOpen && (
               <motion.div
-                className="modal-backdrop"
+                className="search-modal-backdrop"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                onClick={() => setSelectedEvent(null)}
+                onClick={() => {
+                  setSearchOpen(false)
+                  setSearchQuery('')
+                }}
               >
                 <motion.div
-                  className="modal glass"
-                  initial={{ scale: 0.92, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  exit={{ scale: 0.94, opacity: 0 }}
+                  className="search-modal"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <button className="close-btn" onClick={() => setSelectedEvent(null)}>Close</button>
-                  <h3>{selectedEvent.name}</h3>
-                  <p>{selectedEvent.description}</p>
-                  <p><strong>Venue & Time:</strong> {selectedEvent.venue}, {selectedEvent.time}</p>
-                  <p><strong>Participant Details:</strong> {selectedEvent.participants}</p>
-                  <p><strong>Coordinators:</strong> {selectedEvent.coordinators}</p>
-                  <p><strong>Requirements:</strong> {selectedEvent.requirements}</p>
-                  <p><strong>Judging Criteria:</strong> {selectedEvent.judging}</p>
-                  <h4>Event Flow / Rounds</h4>
-                  <ul>
-                    {selectedEvent.rounds.map((round) => (
-                      <li key={round}>{round}</li>
+                  <div className="search-modal-header">
+                    <h3>Search Events</h3>
+                    <button
+                      className="search-close-btn"
+                      onClick={() => {
+                        setSearchOpen(false)
+                        setSearchQuery('')
+                      }}
+                    >
+                      <X size={20} />
+                    </button>
+                  </div>
+
+                  <input
+                    type="text"
+                    className="search-input"
+                    placeholder="Type event name or description..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    autoFocus
+                  />
+
+                  <div className="search-results">
+                    {searchQuery.trim() && searchResults.length === 0 && (
+                      <p className="search-no-results">No events found matching your search.</p>
+                    )}
+                    {searchResults.map((event) => (
+                      <button
+                        key={event.id}
+                        className="search-result-item"
+                        onClick={() => {
+                          openEventPage(event.id)
+                          setSearchOpen(false)
+                          setSearchQuery('')
+                        }}
+                      >
+                        <div>
+                          <p className="search-item-name">{event.name}</p>
+                          <p className="search-item-desc">{event.description}</p>
+                          <p className="search-item-meta">{event.day} • {event.time}</p>
+                        </div>
+                        <ArrowUpRight size={16} />
+                      </button>
                     ))}
-                  </ul>
-                  <h4>Rules</h4>
-                  <ul>
-                    {selectedEvent.rules.map((rule) => (
-                      <li key={rule}>{rule}</li>
-                    ))}
-                  </ul>
-                  {selectedEvent.link && (
-                    <a href={selectedEvent.link} target="_blank" rel="noreferrer" className="btn-glow">
-                      Visit Official Page
-                    </a>
-                  )}
+                  </div>
                 </motion.div>
               </motion.div>
             )}
