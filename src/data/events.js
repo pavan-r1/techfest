@@ -200,7 +200,7 @@ export const events = [
     ],
     judging: 'Accuracy, speed, clarity, confidence, and overall round performance.',
     requirements:
-      'Laptop with slides, projector, timer, printed chits/sheets, markers, optional buzzers.',
+      'No Required materials',
     registerLink: 'https://forms.gle/UfyYDztmHcg88r7m7',
   },
   {
