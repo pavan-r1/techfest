@@ -294,6 +294,17 @@ h2 {
   background: rgba(7, 16, 40, 0.72);
 }
 
+.hero-date-link {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.hero-date-link:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
 .hero-logo-wrap {
   width: 100%;
   margin: 0.75rem auto 1.25rem;
@@ -1130,14 +1141,47 @@ h2 {
     gap: 0.5rem;
   }
 
-  .schedule-axis {
+  .hero-topbar {
     grid-template-columns: 1fr;
+    gap: 0.6rem;
+  }
+
+  .hero-brand,
+  .hero-badge {
+    display: none;
+  }
+
+  .top-nav {
+    width: 100%;
+    padding: 0.72rem 0.9rem;
+    border-radius: 18px;
+    justify-content: flex-start;
     gap: 0.5rem;
   }
 
+  .nav-link {
+    font-size: 0.95rem;
+  }
+
+  .nav-sep,
+  .nav-divider {
+    display: none;
+  }
+
+  .schedule-axis {
+    grid-template-columns: 150px minmax(896px, 1fr);
+    gap: 0.6rem;
+    min-width: 1046px;
+  }
+
   .schedule-row {
-    grid-template-columns: 1fr;
-    gap: 0.4rem;
+    grid-template-columns: 150px minmax(896px, 1fr);
+    gap: 0.6rem;
+    min-width: 1046px;
+  }
+
+  .schedule-ticks {
+    grid-template-columns: repeat(16, minmax(56px, 1fr));
   }
 
   .schedule-track {
@@ -1151,13 +1195,15 @@ h2 {
     font-size: 0.78rem;
   }
 
-  .schedule-ticks {
+  .schedule-board {
     overflow-x: auto;
-    padding-bottom: 0.35rem;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 0.7rem;
   }
 
   .schedule-ticks span {
-    min-width: 56px;
+    font-size: 0.72rem;
+    padding-right: 0.4rem;
   }
 
   .chief-guest-wrap {

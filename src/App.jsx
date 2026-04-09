@@ -274,7 +274,17 @@ function App() {
                 <div className="hero-date-row">
                   <span><CalendarDays size={16} /> 28th & 29th April 2026</span>
                   <span><Clock3 size={16} /> 9:00 AM to 4:30 PM</span>
-                  
+                  <span>
+                    <MapPinned size={16} />
+                    <a
+                      href="https://maps.app.goo.gl/iWgNWVMMks8K2mKc7"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="hero-date-link"
+                    >
+                      Campus Location
+                    </a>
+                  </span>
                 </div>
               </motion.div>
             </header>
