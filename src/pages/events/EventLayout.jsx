@@ -12,11 +12,11 @@ import { ArrowLeft, CalendarDays, Clock3, MapPin, Sparkles } from 'lucide-react'
  *    coordinators: string
  *    faculty: string
  *    registrationFee: string
- *    requirements: string
+ *    requirements?: string
  *    rounds: string[]
  *    rules: string[]
  *    judging: string
- *    registerLink: string
+ *    registerLink?: string
  *    officialLink?: string
  *  } | null
  * }} props
@@ -47,6 +47,14 @@ function EventLayout({ event }) {
 
       <main className="page-inner event-page-inner">
         <section className="event-head glass">
+          <div className="event-logo-wrap">
+            <img
+              src="/images/t-john-logo.png"
+              alt="T John logo"
+              className="event-logo"
+            />
+          </div>
+
           <div className="event-head-top">
             <a href="/" className="btn-outline event-back-link">
               <ArrowLeft size={16} /> Back To Home
@@ -73,9 +81,11 @@ function EventLayout({ event }) {
           </div>
 
           <div className="event-head-actions">
-            <a href={event.registerLink} target="_blank" rel="noreferrer" className="btn-glow">
-              Register Here
-            </a>
+            {event.registerLink && (
+              <a href={event.registerLink} target="_blank" rel="noreferrer" className="btn-glow">
+                Register Here
+              </a>
+            )}
             {event.officialLink && (
               <a href={event.officialLink} target="_blank" rel="noreferrer" className="btn-outline">
                 Open Official Page
@@ -105,10 +115,12 @@ function EventLayout({ event }) {
             <p>{event.registrationFee}</p>
           </article>
 
-          <article className="glass block">
-            <h2><Sparkles size={16} /> Requirements</h2>
-            <p>{event.requirements}</p>
-          </article>
+          {event.requirements && (
+            <article className="glass block">
+              <h2><Sparkles size={16} /> Requirements</h2>
+              <p>{event.requirements}</p>
+            </article>
+          )}
 
           <article className="glass block full-span">
             <h2><Sparkles size={16} /> Event Flow / Rounds</h2>

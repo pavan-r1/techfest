@@ -369,7 +369,7 @@ function App() {
                         </a>
                         <a
                           className="event-register-link"
-                          href={event.registerLink}
+                          href={event.registerLink || event.officialLink || '#'}
                           target="_blank"
                           rel="noreferrer"
                           onClick={(eventClick) => eventClick.stopPropagation()}

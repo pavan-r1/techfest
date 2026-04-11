@@ -1424,6 +1424,18 @@ h2 {
   background: linear-gradient(140deg, rgba(8, 20, 52, 0.88), rgba(6, 18, 46, 0.78));
 }
 
+.event-logo-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0.65rem;
+}
+
+.event-logo {
+  height: 56px;
+  width: auto;
+  object-fit: contain;
+}
+
 .event-head h1 {
   margin: 0.7rem 0 0.35rem;
 }

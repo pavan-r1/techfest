@@ -26,7 +26,7 @@ export const events = [
     judging:
       'Originality, relevance, feasibility, communication, team coordination, confidence, jury response, impact/scalability.',
     requirements:
-      'Projector/smart board, microphone, WiFi, registration sheets, evaluation sheets.',
+      'Idea Abstract, Presentation Slides (PPT), Prototype / Demo (proof of concept).',
     registrationFee: 'Rs. 200 per team (3 members)',
     registerLink: 'https://forms.gle/VmEKmDghwnLBdpd47',
   },
@@ -53,8 +53,7 @@ export const events = [
       'No unfair means or clue tampering.',
     ],
     judging: 'First team with accurate clue order wins; tie-break by lesser completion time.',
-    requirements:
-      'Printed clues, registration sheet, answer sheets, pens, optional volunteers and announcement support.',
+    requirements: '',
     registrationFee: 'Rs. 300 per team (4 members)',
     registerLink: 'https://forms.gle/iLT93YKiNgnCmrKe8',
   },
@@ -80,8 +79,7 @@ export const events = [
       'Robot must remain blindfolded throughout the run.',
     ],
     judging: 'Accuracy, time, mistakes, communication clarity, and team coordination.',
-    requirements:
-      'Blindfolds, cones/chairs/desks, objects (ball/bottle), timer, volunteers.',
+    requirements: '',
     registrationFee: 'Rs. 200 per team (2 members)',
     registerLink: 'https://forms.gle/UjWfbZLiNBJUFdvK8',
   },
@@ -110,10 +108,9 @@ export const events = [
       'Registration fee: Rs.100 per participant.',
     ],
     judging: 'Point and submission-time based leaderboard.',
-    requirements:
-      'High-speed internet, smart board + sound, power outlets, backup systems.',
+    requirements: 'Laptop is required.',
     registrationFee: 'Rs. 100 per participant',
-    registerLink: 'https://forms.gle/9R3ookhPe3vN9AUVA',
+    registerLink: 'https://ctf-phi-one.vercel.app/',
   },
   {
     id: 'blackout-protocol',
@@ -136,7 +133,7 @@ export const events = [
       'Inter-team communication only in Round 2.',
     ],
     judging: 'Logic scores + Intel cards + Mole exile bonus + survival count.',
-    requirements: 'Smart board, printed envelopes/grids/clues, stationery.',
+    requirements: '',
     registrationFee: 'Rs. 200 per team',
     registerLink: 'https://forms.gle/GDiLZMqijqRK9zbC7',
   },
@@ -154,9 +151,9 @@ export const events = [
     rounds: ['Follow the official Hack2Hire schedule and challenge format.'],
     rules: ['Please follow official Hack2Hire rules and judging policy.'],
     judging: 'As per official Hack2Hire criteria.',
-    requirements: 'As specified on the official platform.',
+    requirements: '',
     registrationFee: 'Rs. 200 per team',
-    registerLink: 'https://forms.gle/gtdbcgv4aPqwFMAE7',
+    registerLink: '',
     officialLink: 'https://hck2hire-2026.vercel.app',
   },
   {
@@ -180,8 +177,7 @@ export const events = [
       'Late entry not allowed; internet issues are player responsibility.',
     ],
     judging: 'Cumulative points from placement + kills.',
-    requirements:
-      'Stable WiFi, power points, host device, smart board/projector, score tracking sheet.',
+    requirements: 'Phone is required.',
     registrationFee: 'Rs. 300 per team',
     registerLink: 'https://forms.gle/wanHG3phwhAPZkoH8',
   },
@@ -206,8 +202,7 @@ export const events = [
       'Time limits are strict; malpractice disqualifies.',
     ],
     judging: 'Accuracy, speed, clarity, confidence, and overall round performance.',
-    requirements:
-      'No Required materials',
+    requirements: '',
     registrationFee: 'Rs. 100 per participant',
     registerLink: 'https://forms.gle/UfyYDztmHcg88r7m7',
   },
@@ -232,7 +227,7 @@ export const events = [
       'Maximum 2 hints; final decisions cannot be changed.',
     ],
     judging: 'Correctness + least completion time + fewer hints used.',
-    requirements: 'Projector, systems, WiFi, clue props and lock-based puzzle setup.',
+    requirements: '',
     registrationFee: 'Rs. 250 per team',
     registerLink: 'https://forms.gle/zWhshtheNuUtvEv89',
   },
