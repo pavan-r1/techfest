@@ -214,7 +214,7 @@ function App() {
               <div className="hero-grid-overlay" aria-hidden="true" />
 
               <div className="hero-topbar">
-                <div className="hero-brand glass">
+                <div className="hero-brand">
                   <img src="/images/t-john-logo.png" alt="Logo" className="nav-logo" />
                 </div>
 
@@ -238,8 +238,8 @@ function App() {
 
                 <div className="hero-badge">
                   <img
-                    src="/images/force logo.png"
-                    alt="FORCE"
+                    src="/images/vtu logo.jpg"
+                    alt="VTU"
                     className="hero-badge-logo"
                   />
                 </div>
@@ -252,7 +252,7 @@ function App() {
                 transition={{ duration: 0.7, delay: 0.15 }}
                 whileHover={{ scale: 1.03, rotate: -1 }}
               >
-                <img src="/images/t-john-logo.png" alt="T John College" className="hero-logo" />
+                <img src="/images/force logo.png" alt="FORCE" className="hero-logo" />
               </motion.div>
 
               <motion.div
