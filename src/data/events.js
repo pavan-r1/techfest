@@ -67,7 +67,7 @@ export const events = [
     description:
       'One participant memorizes a path in 10 seconds and guides a blindfolded teammate using only verbal commands.',
     participants: 'Team size: 2 | Team limit: 20-30',
-    coordinators: 'Pallavi R (7975582202), Nishchita (8867236896)',
+    coordinators: 'Pallavi R (7975582202), G A Nishchitha Varsha (8867236896)',
     faculty: 'Prof. Nikitha Sooraj, Prof. Syeda Tameema, Dr. Mani S',
     rounds: [
       'Memory Phase: Controller views path/sequence for 10 seconds.',
@@ -121,18 +121,23 @@ export const events = [
     venue: 'Large Classroom',
     description:
       'A social deduction logic game where teams solve puzzles while identifying the hidden Mole.',
-    participants: 'Strictly 4 per team | Max 15-20 teams',
-    coordinators: 'Midhun Krishna M (8197203406), Gunakar K R (9786296819)',
+    participants: '4 per Team',
+    coordinators: 'Midhun (81972 03406)',
     faculty: 'Prof. Tabassum, Prof. Sathiyapriya',
     rounds: [
-      'Data Recovery (20 mins), The Trade (25 mins), Interrogation (15 mins), The Purge (30 mins).',
+      '01. COORD_RECOVERY: Locate hidden coordinates on a 10x10 data map. Test your spatial logic against the clock.',
+      "02. ENVELOPE_HEDGE: Blind-trade envelopes with other teams. Decipher who is giving you 'Intel' and who is giving 'Viruses'.",
+      '03. INTERROGATION: Discuss, accuse, and vote. A 3/4 majority can exile a suspected Mole from your cell.',
+      '04. SYSTEM_PURGE: A rapid-fire logic quiz. Every 2 minutes, the lowest-ranking teams lose members until one remains.',
     ],
     rules: [
-      'No phones/calculators.',
-      'Exposing role slips causes disqualification.',
-      'Inter-team communication only in Round 2.',
+      'ZERO-TECH: No external hardware.',
+      'INTEGRITY: Accidental exposure = Disconnection.',
+      'EXILE: Eliminate threats via vote.',
+      'MASTERMIND: Undetected Moles seize all.',
     ],
-    judging: 'Logic scores + Intel cards + Mole exile bonus + survival count.',
+    judging:
+      'Global leaderboard standing is calculated by Logic Accuracy, volume of Intel Cards secured, and success in Exiling the Mole. Bonus multipliers are awarded for every member of your cell that survives The Purge.',
     requirements: '',
     registrationFee: 'Rs. 200 per team',
     registerLink: 'https://forms.gle/GDiLZMqijqRK9zbC7',
@@ -152,7 +157,7 @@ export const events = [
     rules: ['Please follow official Hack2Hire rules and judging policy.'],
     judging: 'As per official Hack2Hire criteria.',
     requirements: '',
-    registrationFee: 'Rs. 200 per team',
+    registrationFee: 'Registration Closed',
     registerLink: '',
     officialLink: 'https://hck2hire-2026.vercel.app',
   },
@@ -207,10 +212,10 @@ export const events = [
     registerLink: 'https://forms.gle/UfyYDztmHcg88r7m7',
   },
   {
-    id: 'debugging-escape-room',
+    id: '-escape-room',
     day: 'Day 2',
     icon: 'escape',
-    name: 'Debugging Escape Room',
+    name: ' Escape Room',
     time: '12:00 PM - 4:00 PM',
     venue: 'Labs (preferably 112 and 113)',
     description:
@@ -245,7 +250,7 @@ export const timeline = {
   day2: [
     'Day 2 Featured: Hack2Hire',
     '10:00 AM - 12:00 PM: Free Fire Tournament',
-    '12:00 PM - 4:00 PM: Debugging Escape Room',
+    '12:00 PM - 4:00 PM:  Escape Room',
     '10:00 AM - 1:00 PM: Tech Charades',
   ],
 }

@@ -13,7 +13,7 @@ const registrationEvents = [
   'Hack2Hire',
   'Operation Booyah: Free Fire Showdown',
   'Tech Charades',
-  'Debugging Escape Room',
+  'Escape Room',
 ]
 
 function Registration() {

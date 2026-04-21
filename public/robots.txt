@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://force-inovators-meet-2026.vercel.app/sitemap.xml

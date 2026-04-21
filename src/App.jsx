@@ -95,7 +95,7 @@ const scheduleRows = /** @type {Record<ScheduleDay, ScheduleBarRow[]>} */ ({
   'Day 2': [
     { title: 'Hack2Hire', start: 10 * 60, end: 12 * 60, tone: 'gold', timeLabel: '10:00 AM - 12:00 PM' },
     { title: 'Free Fire Tournament', start: 10 * 60, end: 16 * 60, tone: 'gold', timeLabel: '10:00 AM - 2:00 PM' },
-    { title: 'Debugging Escape Room', start: 12 * 60, end: 16 * 60, tone: 'cyan', timeLabel: '12:00 PM - 4:00 PM' },
+    { title: ' Escape Room', start: 12 * 60, end: 16 * 60, tone: 'cyan', timeLabel: '12:00 PM - 4:00 PM' },
     { title: 'Tech Charades', start: 10 * 60, end: 13 * 60, tone: 'teal', timeLabel: '10:00 AM - 1:00 PM' },
   ],
 })
