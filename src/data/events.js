@@ -179,7 +179,7 @@ export const events = [
     judging: 'Cumulative points from placement + kills.',
     requirements: 'Phone is required.',
     registrationFee: 'Rs. 300 per team',
-    registerLink: 'https://forms.gle/wanHG3phwhAPZkoH8',
+    registerLink: 'https://docs.google.com/forms/d/1Gd6FWx3o-4_gVkMw9qsgPqThroc44FADGJGi6_dC8fE/edit',
   },
   {
     id: 'tech-charades',
